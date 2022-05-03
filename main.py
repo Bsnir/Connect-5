@@ -1,6 +1,6 @@
 language = "python3"
 run = "[run]"
-def print_tic_tac_toe(values):
+def print_board(values):
     print("\n")
     print("\t     |     |")
     print("\t  {}  |  {}  |  {}".format(values[0], values[1], values[2]))
@@ -17,147 +17,120 @@ def print_tic_tac_toe(values):
     print("\n")
  
  
-def check_win(player_pos, cur_player):
+def check_for_win(p_pos, cur_p):
  
-    # All possible winning combinations
     solutions = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
  
-    # Loop to check if any winning combination is satisfied
     for x in solutions:
-        if all(y in player_pos[cur_player] for y in x):
+        if all(y in p_pos[cur_p] for y in x):
  
-            # Return True if any winning combination satisfies
             return True
-    # Return False if no combination is satisfied       
     return False       
  
-# Function to check if the game is drawn
-def check_draw(player_pos):
-    if len(player_pos['X']) + len(player_pos['O']) == 9:
+def check_for_draw(p_pos):
+    if len(p_pos['X']) + len(p_pos['O']) == 9:
         return True
     return False       
  
-# Function for a single game of Tic Tac Toe
-def single_game(cur_player):
+def game_run(cur_p):
  
-    # Represents the Tic Tac Toe
     values = [' ' for x in range(9)]
      
-    # Stores the positions occupied by X and O
-    player_pos = {'X':[], 'O':[]}
+    p_pos = {'X':[], 'O':[]}
      
-    # Game Loop for a single game of Tic Tac Toe
     while True:
-        print_tic_tac_toe(values)
+        print_board(values)
          
-        # Try exception block for MOVE input
         try:
-            print("Player ", cur_player, " turn. Which box? : ", end="")
+            print("Player ", cur_p, " turn. Which box? : ", end="")
             move = int(input()) 
         except ValueError:
-            print("Wrong Input!!! Try Again")
+            print("Try Again")
             continue
  
-        # Sanity check for MOVE inout
         if move < 1 or move > 9:
-            print("Wrong Input!!! Try Again")
+            print("Not on the board, Try Again")
             continue
  
-        # Check if the box is not occupied already
         if values[move-1] != ' ':
             print("Place already filled. Try again!!")
             continue
  
-        # Update game information
  
-        # Updating grid status 
-        values[move-1] = cur_player
+        values[move-1] = cur_p
  
-        # Updating player positions
-        player_pos[cur_player].append(move)
+        p_pos[cur_p].append(move)
  
-        # Function call for checking win
-        if check_win(player_pos, cur_player):
-            print_tic_tac_toe(values)
-            print("Player ", cur_player, " has won the game!!")     
+        if check_for_win(p_pos, cur_p):
+            print_board(values)
+            print("Player ", cur_p, " has won the game!!")     
             print("\n")
-            return cur_player
+            return cur_p
  
-        # Function call for checking draw game
-        if check_draw(player_pos):
-            print_tic_tac_toe(values)
+        if check_for_draw(p_pos):
+            print_board(values)
             print("Game Drawn")
             print("\n")
             return 'D'
  
-        # Switch player moves
-        if cur_player == 'X':
-            cur_player = 'O'
+        if cur_p == 'X':
+            cur_p = 'O'
         else:
-            cur_player = 'X'
+            cur_p = 'X'
  
-if __name__ == "__main__":
+
+  
+def gameamount(games):
+      print("Player 1")
+      p_1 = input("Enter the name : ")
+      print("\n")
  
-    print("Player 1")
-    player1 = input("Enter the name : ")
-    print("\n")
- 
-    print("Player 2")
-    player2 = input("Enter the name : ")
-    print("\n")
+      print("Player 2")
+      p_2 = input("Enter the name : ")
+      print("\n")
      
-    # Stores the player who chooses X and O
-    cur_player = player1
+      cur_p = p_1
  
-    # Stores the choice of players
-    player_choice = {'X' : "", 'O' : ""}
+      p_choice = {'X' : "", 'O' : ""}
  
-    # Stores the options
-    options = ['X', 'O']
- 
- 
-    # Game Loop for a series of Tic Tac Toe
-    # The loop runs until the players quit 
-    while True:
- 
-        # Player choice Menu
-        print("Turn to choose for", cur_player)
+      opts = ['X', 'O']
+      for x in range(games):
+        print("Turn to choose for", cur_p)
         print("Enter 1 for X")
         print("Enter 2 for O")
 
  
-        # Try exception for CHOICE input
         try:
             choice = int(input())   
         except ValueError:
-            print("Wrong Input!!! Try Again\n")
+            print("Not Applicable\n")
             continue
  
-        # Conditions for player choice  
         if choice == 1:
-            player_choice['X'] = cur_player
-            if cur_player == player1:
-                player_choice['O'] = player2
+            p_choice['X'] = cur_p
+            if cur_p == p_1:
+                p_choice['O'] = p_2
             else:
-                player_choice['O'] = player1
+                p_choice['O'] = p_1
  
         elif choice == 2:
-            player_choice['O'] = cur_player
-            if cur_player == player1:
-                player_choice['X'] = player2
+            p_choice['O'] = cur_p
+            if cur_p == p_1:
+                p_choice['X'] = p_2
             else:
-                player_choice['X'] = player1
+                p_choice['X'] = p_1
          
 
         else:
-            print("Wrong Choice!!!! Try Again\n")
+            print("Try Again\n")
  
-        # Stores the winner in a single game of Tic Tac Toe
-        winner = single_game(options[choice-1])
+        win = game_run(opts[choice-1])
          
 
-        # Switch player who chooses X or O
-        if cur_player == player1:
-            cur_player = player2
+        if cur_p == p_1:
+            cur_p = p_2
         else:
-            cur_player = player1
+            cur_p = p_1
+games = int(input("How many games do you want to play: "))
+print("\n")
+gameamount(games)
